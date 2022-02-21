@@ -1,7 +1,8 @@
 import akshare as ak
 import datetime
+from simple_policy.history_abs import HistoryAbs
 
-class HistoryEtf(object):
+class HistoryEtf(HistoryAbs):
     """
     场内ETF基金历史行情
     symbol查询地址：http://vip.stock.finance.sina.com.cn/fund_center/index.html#jjhqetf
@@ -43,3 +44,4 @@ class HistoryEtf(object):
             return 0.0
         open_price = firt_data_year_month["open"]
         return open_price
+    

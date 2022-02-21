@@ -1,5 +1,5 @@
-from history_abs import HistoryAbs
-from position import Position
+from simple_policy.history_abs import HistoryAbs
+from simple_policy.position import Position
 import datetime
 
 class SimplePolicy(object):

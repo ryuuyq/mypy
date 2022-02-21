@@ -1,4 +1,4 @@
-from history_abs import HistoryAbs
+from simple_policy.history_abs import HistoryAbs
 import datetime
 
 class Position(object):

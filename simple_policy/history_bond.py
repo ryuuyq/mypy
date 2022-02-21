@@ -1,7 +1,8 @@
 import akshare as ak
 import datetime
+from simple_policy.history_abs import HistoryAbs
 
-class HistoryBond(object):
+class HistoryBond(HistoryAbs):
     """
     场内债券的历史行情
     symbol查询地址：http://finance.sina.com.cn/bond/
@@ -43,3 +44,4 @@ class HistoryBond(object):
             return 0.0
         open_price = firt_data_year_month["open"]
         return open_price
+    
