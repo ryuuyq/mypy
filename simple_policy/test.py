@@ -37,13 +37,42 @@ def test_2017_01():
     test_policy.run_policy()
     tmp_result = test_policy.get_results()
     print(tmp_result)
+
+def test_2017_01_300_500():
+    his_list = [
+        HistoryEtf('sh510300'), 
+        HistoryEtf('sh510500')
+    ]
+    # etf_list = ['sh518880']
+    test_policy = SimplePolicy(his_list)
+    test_policy.set_params(start_year=2017, start_month=1, start_amount=1000000, next_fixed_amount=0, step_month=12, fixed_times=100)
+    test_policy.run_policy()
+    tmp_result = test_policy.get_results()
+    print(tmp_result)
+
+
+def test_2017_01_bond():
+    his_list = [
+        HistoryEtf('sh510300'), 
+        HistoryEtf('sh510500'),
+        HistoryBond('sh019547')
+    ]
+    # etf_list = ['sh518880']
+    test_policy = SimplePolicy(his_list)
+    test_policy.set_params(start_year=2017, start_month=1, start_amount=1000000, next_fixed_amount=0, step_month=12, fixed_times=100)
+    test_policy.run_policy()
+    tmp_result = test_policy.get_results()
+    print(tmp_result)
+    
     
 def main():
     if __name__ != "__main__":
         return
 
     # test001()
-    test_2017_01()
+    # test_2017_01()
+    test_2017_01_300_500()
+    test_2017_01_bond()
   
     
 
