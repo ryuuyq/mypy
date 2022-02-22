@@ -1,13 +1,18 @@
-from history_abs import HistoryAbs
-from history_etf import HistoryEtf
-from history_bond import HistoryBond
-from position import Position
-from simple_policy import SimplePolicy
+import os
+import sys
+
+abspath = os.path.abspath('/home/jovyan/work/code/mypy')
+if abspath not in sys.path:
+    sys.path.append(abspath)
+
+print(sys.path)
+
+import simple_policy as sp
 
 
 def test001():
     symbol="sh513030"
-    etf_sh510050 = HistoryEtf(symbol)
+    etf_sh510050 = sp.HistoryEtf(symbol)
     
     print("all history\n")
     print(etf_sh510050.get_history())
@@ -18,21 +23,21 @@ def test001():
     print("first_data = \n", first_data)
     
     
-    position_sh510050 = Position(etf_sh510050)
+    position_sh510050 = sp.Position(etf_sh510050)
     position_sh510050.update_position_by_amount_year_month(1000000, 2022, 1)
     print("position_sh510050 持仓总金额=", position_sh510050.get_total_amount_by_year_month(2022, 1))
 
 
 def test_2017_01():
     his_list = [
-        HistoryEtf('sh513030'), 
-        HistoryEtf('sh513520'), 
-        HistoryEtf('sz159920'),
-        HistoryEtf('sh510050'), 
-        HistoryEtf('sh518880')
+        sp.HistoryEtf('sh513030'), 
+        sp.HistoryEtf('sh513520'), 
+        sp.HistoryEtf('sz159920'),
+        sp.HistoryEtf('sh510050'), 
+        sp.HistoryEtf('sh518880')
     ]
     # etf_list = ['sh518880']
-    test_policy = SimplePolicy(his_list)
+    test_policy = sp.SimplePolicy(his_list)
     test_policy.set_params(start_year=2017, start_month=1, start_amount=1000000, next_fixed_amount=0, step_month=12, fixed_times=100)
     test_policy.run_policy()
     tmp_result = test_policy.get_results()
@@ -40,11 +45,11 @@ def test_2017_01():
 
 def test_2017_01_300_500():
     his_list = [
-        HistoryEtf('sh510300'), 
-        HistoryEtf('sh510500')
+        sp.HistoryEtf('sh510300'), 
+        sp.HistoryEtf('sh510500')
     ]
     # etf_list = ['sh518880']
-    test_policy = SimplePolicy(his_list)
+    test_policy = sp.SimplePolicy(his_list)
     test_policy.set_params(start_year=2017, start_month=1, start_amount=1000000, next_fixed_amount=0, step_month=12, fixed_times=100)
     test_policy.run_policy()
     tmp_result = test_policy.get_results()
@@ -53,12 +58,12 @@ def test_2017_01_300_500():
 
 def test_2017_01_bond():
     his_list = [
-        HistoryEtf('sh510300'), 
-        HistoryEtf('sh510500'),
-        HistoryBond('sh019547')
+        sp.HistoryEtf('sh510300'), 
+        sp.HistoryEtf('sh510500'),
+        sp.HistoryBond('sh019547')
     ]
     # etf_list = ['sh518880']
-    test_policy = SimplePolicy(his_list)
+    test_policy = sp.SimplePolicy(his_list)
     test_policy.set_params(start_year=2017, start_month=1, start_amount=1000000, next_fixed_amount=0, step_month=12, fixed_times=100)
     test_policy.run_policy()
     tmp_result = test_policy.get_results()
