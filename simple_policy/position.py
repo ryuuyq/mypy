@@ -17,10 +17,11 @@ class Position(object):
         """
         year年month月的第一个交易日的持仓总金额（按open价计算）
         """
-        if self._position_price <= 0:
-            return 0
         if self._position_amount <= 0:
             return 0
+        if self._position_price <= 0:
+            #如果上次没有价格，则不计算涨幅后的金额
+            return self._position_amount
         
         # 获取涨跌幅（4位小数，ru: +0.1234.即 +12.34%）
         open_price = self._ins_hist.get_open_price_by_year_month(year, month)

@@ -2,19 +2,22 @@ import datetime
 from simple_policy.history_abs import HistoryAbs
 from simple_policy.position import Position
 
-class SimplePolicy(object):
+class SmallPolicy(object):
     """
     simple策略：起投一个金额start_amount，平均到几个资产里，然后每隔step_month个月做一次市值大平均，高于平均值的卖，低于平均值的买。
+    ins_his_list类型 = list([(HistoryAbs, float)])
     """
     
-    def __init__(self, ins_his_list: list([HistoryAbs])):
+    def __init__(self, ins_his_list: list([(HistoryAbs, float)])):
         self._amount_dict = {}
         self._position_dict = {}
+        self._rate_dict = {}
         self._is_inited = False
         if len(ins_his_list) == 0:
             raise "SimplePolicy init param ins_his_list is empty"
-        for item in ins_his_list:
-            self._position_dict[item.get_symbol()] = Position(item)
+        for (item_ins, item_rate) in ins_his_list:
+            self._position_dict[item_ins.get_symbol()] = Position(item_ins)
+            self._rate_dict[item_ins.get_symbol()] = item_rate
     
     def set_params(self, start_year: int, start_month: int, start_amount: int, next_fixed_amount: int, step_month: int, fixed_times: int):
         """
@@ -47,19 +50,20 @@ class SimplePolicy(object):
         
         _etf_list = []
         for tmp_key in self._position_dict.keys():
-            tmp_item = self._position_dict[tmp_key]
-            if tmp_item.get_price_by_year_month(year, month) > 0:
-                _etf_list.append(tmp_key)
+            _etf_list.append(tmp_key)
+            # tmp_item = self._position_dict[tmp_key]
+            # if tmp_item.get_price_by_year_month(year, month) > 0:
+            #     _etf_list.append(tmp_key)
         
         if len(_etf_list) == 0:
             return
         
         # print("_adjust_position _etf_list = ", _etf_list)
-        
-        _amount_to_divide = total / len(_etf_list)
         for tmp_key in _etf_list:
+            tmp_rate = self._rate_dict[tmp_key]
+            tmp_amount = total * tmp_rate
             tmp_item = self._position_dict[tmp_key]
-            tmp_item.update_position_by_amount_year_month(_amount_to_divide, year, month)
+            tmp_item.update_position_by_amount_year_month(tmp_amount, year, month)
         
         #保存当前持仓金额
         self._amount_dict["%04d-%02d" % (year, month)] = self._get_position_total_amount(year, month)
