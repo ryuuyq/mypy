@@ -1,4 +1,6 @@
 import datetime
+import imp
+from typing import Tuple, List
 from simple_policy.history_abs import HistoryAbs
 from simple_policy.position import Position
 
@@ -8,7 +10,7 @@ class SmallPolicy(object):
     ins_his_list类型 = list([(HistoryAbs, float)])
     """
     
-    def __init__(self, ins_his_list: list([(HistoryAbs, float)])):
+    def __init__(self, ins_his_list: List[Tuple[HistoryAbs, float]]):
         self._amount_dict = {}
         self._position_dict = {}
         self._rate_dict = {}
